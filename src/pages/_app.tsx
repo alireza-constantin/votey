@@ -1,5 +1,6 @@
 import '../styles/globals.css';
 
+import superjson from 'superjson';
 import { withTRPC } from '@trpc/next';
 import { AppType } from 'next/dist/shared/lib/utils';
 import { AppRouter } from './api/trpc/[trpc]';
@@ -16,7 +17,8 @@ export default withTRPC<AppRouter>({
 
 		return {
 			url,
+			transformer: superjson,
 		};
 	},
-	ssr: true,
+	ssr: false,
 })(MyApp);
