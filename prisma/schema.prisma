@@ -17,4 +17,15 @@ model Question {
   endsAt DateTime?
 
   question String
+  options  String
+  vote     Vote[]
+}
+
+model Vote {
+  id String @id @default(cuid())
+
+  choice Int
+
+  question    Question? @relation(fields: [questionsId], references: [id])
+  questionsId String?
 }

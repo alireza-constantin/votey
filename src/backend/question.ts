@@ -27,7 +27,8 @@ export const questionRouter = trpc.router()
         async resolve({ input }) {
             return await prisma.question.create({
                 data: {
-                    question: input.question
+                    question: input.question,
+                    options: JSON.stringify([])
                 }
             })
         }

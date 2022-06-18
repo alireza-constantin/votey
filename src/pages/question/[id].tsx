@@ -9,7 +9,16 @@ const QuestionContent: React.FC<{ id: string }> = ({ id }) => {
 		return <div>Question Not Found</div>;
 	}
 
-	return <div>{data?.question}</div>;
+	const options: string[] = JSON.parse(data?.options!);
+
+	return (
+		<div>
+			<h2>{data?.question}</h2>
+			{options.map((option, idx) => (
+				<div key={idx}>{option}</div>
+			))}
+		</div>
+	);
 };
 
 const QuestionPage = () => {
