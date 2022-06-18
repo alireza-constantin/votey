@@ -1,5 +1,6 @@
 import { trpc } from '@/utils/trpc';
-import type { NextPage, GetServerSideProps } from 'next';
+import type { NextPage } from 'next';
+import Link from 'next/link';
 import React from 'react';
 
 const CreateVote: React.FC = () => {
@@ -39,9 +40,13 @@ const Home: NextPage = (props: any) => {
 				<h1 className="font-bold text-3xl">Questions</h1>
 				<div>
 					{data.map((question) => (
-						<div key={question.id}>
-							<p>{question.question}</p>
-						</div>
+						<Link key={question.id} href={`question/${question.id}`}>
+							<a>
+								<div className="p-4">
+									<p>{question.question}</p>
+								</div>
+							</a>
+						</Link>
 					))}
 				</div>
 			</div>
