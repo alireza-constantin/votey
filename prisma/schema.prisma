@@ -16,9 +16,13 @@ model Question {
 
   endsAt DateTime?
 
+  ownerToken String
+
   question String
   options  String
   vote     Vote[]
+
+  @@index([ownerToken])
 }
 
 model Vote {

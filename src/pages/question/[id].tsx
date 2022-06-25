@@ -9,12 +9,12 @@ const QuestionContent: React.FC<{ id: string }> = ({ id }) => {
 		return <div>Question Not Found</div>;
 	}
 
-	const options: string[] = JSON.parse(data?.options!);
+	const options: string[] = data?.options && JSON.parse(data?.options);
 
 	return (
 		<div>
 			<h2>{data?.question}</h2>
-			{options.map((option, idx) => (
+			{options?.map((option, idx) => (
 				<div key={idx}>{option}</div>
 			))}
 		</div>
@@ -22,9 +22,12 @@ const QuestionContent: React.FC<{ id: string }> = ({ id }) => {
 };
 
 const QuestionPage = () => {
-	const { query } = useRouter();
+	const { query, isReady } = useRouter();
 	const { id } = query;
 
+	if (!isReady) {
+		return <div>Loading...</div>;
+	}
 	if (!id || typeof id !== 'string') return <div>No Id</div>;
 
 	return (
