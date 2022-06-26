@@ -16,9 +16,14 @@ export default withTRPC<AppRouter>({
 			: 'http://localhost:3000/api/trpc';
 
 		return {
+			headers() {
+				return {
+					cookie: ctx?.req?.headers.cookie,
+				};
+			},
 			url,
 			transformer: superjson,
 		};
 	},
-	ssr: false,
+	ssr: true,
 })(MyApp);
