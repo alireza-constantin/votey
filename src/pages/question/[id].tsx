@@ -9,11 +9,11 @@ const QuestionContent: React.FC<{ id: string }> = ({ id }) => {
 		return <div>Question Not Found</div>;
 	}
 
-	const options: string[] = data?.options && JSON.parse(data?.options);
+	const options: string[] = data?.question?.options && JSON.parse(data?.question?.options);
 
 	return (
 		<div>
-			<h2>{data?.question}</h2>
+			<h2>{data?.question?.question}</h2>
 			{options?.map((option, idx) => (
 				<div key={idx}>{option}</div>
 			))}

@@ -8,7 +8,7 @@ const CreateVote: React.FC = () => {
 	const client = trpc.useContext();
 	const { mutate, isLoading } = trpc.useMutation('questions.create', {
 		onSuccess: () => {
-			client.invalidateQueries('questions.getAll');
+			client.invalidateQueries('questions.getAllMyQuestions');
 			if (!inputRef.current) return;
 			inputRef.current.value = '';
 		},
@@ -29,7 +29,7 @@ const CreateVote: React.FC = () => {
 };
 
 const Home: NextPage = (props: any) => {
-	const { data, isLoading } = trpc.useQuery(['questions.getAll']);
+	const { data, isLoading } = trpc.useQuery(['questions.getAllMyQuestions']);
 	console.log(data);
 
 	if (isLoading || !data) return <div>...Loading</div>;

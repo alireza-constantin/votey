@@ -4,9 +4,15 @@ import { z } from 'zod';
 import { createRouter } from './context';
 
 export const questionRouter = createRouter()
-    .query('getAll', {
-        async resolve() {
-            return await prisma.question.findMany()
+    .query('getAllMyQuestions', {
+        async resolve({ ctx }) {
+            return await prisma.question.findMany({
+                where: {
+                    ownerToken: {
+                        equals: ctx.token
+                    }
+                }
+            })
         }
     })
     .query('getById', {
@@ -14,23 +20,26 @@ export const questionRouter = createRouter()
             id: z.string()
         }),
         async resolve({ input, ctx }) {
-            console.log(ctx.token)
-            return await prisma.question.findFirst({
+
+            const question = await prisma.question.findFirst({
                 where: {
                     id: input.id
                 }
             })
+
+            return { question, isOwner: ctx.token }
         }
     })
     .mutation('create', {
         input: z.object({
             question: z.string().min(5).max(600)
         }),
-        async resolve({ input }) {
+        async resolve({ input, ctx }) {
             return await prisma.question.create({
                 data: {
                     question: input.question,
-                    options: JSON.stringify([])
+                    options: JSON.stringify([]),
+                    ownerToken: ctx.token || ''
                 }
             })
         }
