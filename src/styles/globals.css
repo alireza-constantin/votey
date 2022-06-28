@@ -3,5 +3,10 @@
 @tailwind utilities;
 
 body {
-    @apply bg-black/90 text-gray-200
+    @apply bg-slate-900 text-gray-200
+}
+
+.text-shadow {
+    text-shadow: 3px 3px #1849b3;
+    color: #b8b8b8;
 }

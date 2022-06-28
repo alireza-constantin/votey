@@ -2,6 +2,7 @@ import * as trpc from '@trpc/server';
 import { prisma } from '@/db/client'
 import { z } from 'zod';
 import { createRouter } from './context';
+import { createQuestionValidator } from '@/utils/validator';
 
 export const questionRouter = createRouter()
     .query('getAllMyQuestions', {
@@ -31,9 +32,7 @@ export const questionRouter = createRouter()
         }
     })
     .mutation('create', {
-        input: z.object({
-            question: z.string().min(5).max(600)
-        }),
+        input: createQuestionValidator,
         async resolve({ input, ctx }) {
             return await prisma.question.create({
                 data: {
