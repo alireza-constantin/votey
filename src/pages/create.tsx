@@ -3,11 +3,15 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { createQuestionType, createQuestionValidator } from '@/utils/validator';
+import { useRouter } from 'next/router';
 
 const CreateVote: React.FC = () => {
+	const router = useRouter();
+
 	const {
 		register,
 		handleSubmit,
+		reset,
 		formState: { errors },
 	} = useForm<createQuestionType>({
 		resolver: zodResolver(createQuestionValidator),
@@ -16,14 +20,16 @@ const CreateVote: React.FC = () => {
 	// const inputRef = React.useRef<HTMLInputElement>(null);
 	const client = trpc.useContext();
 	const { mutate, isLoading } = trpc.useMutation('questions.create', {
-		onSuccess: () => {
+		onSuccess: (data) => {
 			client.invalidateQueries('questions.getAllMyQuestions');
+			reset();
+			router.push(`question/${data.id}`);
 		},
 	});
 
 	const onCreateVote = (data: createQuestionType) => {
 		console.log(data);
-		// mutate({ question: value });
+		mutate({ question: data.question });
 	};
 
 	return (

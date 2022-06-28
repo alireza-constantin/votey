@@ -34,6 +34,7 @@ export const questionRouter = createRouter()
     .mutation('create', {
         input: createQuestionValidator,
         async resolve({ input, ctx }) {
+            if (!ctx.token) throw new Error('unauthorized')
             return await prisma.question.create({
                 data: {
                     question: input.question,
