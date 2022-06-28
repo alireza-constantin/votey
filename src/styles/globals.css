@@ -3,7 +3,8 @@
 @tailwind utilities;
 
 body {
-    @apply bg-slate-900 text-gray-200
+    @apply bg-slate-900 text-gray-200;
+    overflow-x: hidden;
 }
 
 .text-shadow {

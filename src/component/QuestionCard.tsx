@@ -1,27 +1,42 @@
 import React from 'react';
 import Link from 'next/link';
 import { Question } from '@prisma/client';
+import { motion } from 'framer-motion';
 
 const QuestionCard: React.FC<{
 	question: Question;
+	i: number;
 	//   copyToClipboard: (question: Question) => void;
-}> = ({ question }) => {
-	return (
-		<Link href={`/question/${question.id}`}>
-			<div
-				key={question.id}
-				className="card cursor-pointer rounded-md px-4 py-2 bg-indigo-900/20 shadow-xl hover:shadow-2xl  shadow-black/50"
-			>
-				<div>
-					<h1 className="text-lg font-bold capitalize" key={question.id}>
-						{question.question}
-					</h1>
-					<p className="text-xs mt-2 text-white/30">Created on {question.createdAt.toDateString()}</p>
+}> = ({ question, i }) => {
+	const spring = {
+		type: 'spring',
+		stiffness: 150,
+		damping: 11,
+		mass: 1,
+	};
 
+	return (
+		<motion.div
+			animate={{ x: 0, opacity: 1 }}
+			layout
+			initial={{ x: i * -800, opacity: 0 }}
+			// transition={{ duration: 3, delay: i * 0.3 }}
+			transition={spring}
+		>
+			<Link href={`/question/${question.id}`}>
+				<div
+					key={question.id}
+					className="flex flex-col justify-between cursor-pointer rounded-md px-4 py-2 bg-indigo-900/20 shadow-xl hover:shadow-2xl  shadow-black/50"
+				>
+					<div>
+						<h1 className="text-lg font-bold capitalize" key={question.id}>
+							{question.question}
+						</h1>
+						<p className="text-xs mt-4 text-white/30">Created on {question.createdAt.toDateString()}</p>
+					</div>
 					<div
-						className="cursor-pointer  inline-block mt-4 py-2 hover:scale-125"
+						className="cursor-pointer self-end mt-6  p-2 hover:opacity-60"
 						onClick={(e) => {
-							console.log('hello');
 							e.stopPropagation();
 						}}
 					>
@@ -41,8 +56,8 @@ const QuestionCard: React.FC<{
 						</svg>
 					</div>
 				</div>
-			</div>
-		</Link>
+			</Link>
+		</motion.div>
 	);
 };
 

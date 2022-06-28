@@ -4,9 +4,16 @@ import superjson from 'superjson';
 import { withTRPC } from '@trpc/next';
 import { AppType } from 'next/dist/shared/lib/utils';
 import { AppRouter } from '@/backend';
+import Nav from '@/component/Nav';
 
 const MyApp: AppType = ({ Component, pageProps }) => {
-	return <Component {...pageProps} />;
+	return (
+		<div className="p-4">
+			<Nav>
+				<Component {...pageProps} />
+			</Nav>
+		</div>
+	);
 };
 
 export default withTRPC<AppRouter>({
