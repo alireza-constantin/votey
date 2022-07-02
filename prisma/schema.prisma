@@ -35,6 +35,7 @@ model Vote {
   question    Question? @relation(fields: [questionsId], references: [id])
   questionsId String?
 
+  @@unique([questionsId, voterToken])
   @@index([voterToken])
   @@index([questionsId])
 }
