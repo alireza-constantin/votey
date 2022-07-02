@@ -6,6 +6,11 @@ import type { createQuestionType } from '@/utils/validator';
 const QuestionContent: React.FC<{ id: string }> = ({ id }) => {
 	const { data, isLoading } = trpc.useQuery(['questions.getById', { id }]);
 
+	// voting mutation
+	const { mutate, data: voteResponse } = trpc.useMutation(['questions.vote'], {
+		onSuccess: () => window.location.reload(),
+	});
+
 	if (!isLoading && !data) {
 		return <div>Question Not Found</div>;
 	}
@@ -14,12 +19,28 @@ const QuestionContent: React.FC<{ id: string }> = ({ id }) => {
 		options: data?.question?.options && JSON.parse(data?.question?.options),
 	};
 
+	console.log(data);
+
 	return (
 		<div>
+			{data?.isOwner && <p>You are owner</p>}
 			<h2>{data?.question?.question}</h2>
-			{options?.map((option, idx) => (
-				<div key={idx}>{option.text}</div>
-			))}
+			{options?.map((option, idx) => {
+				if (data?.isOwner || data?.vote) {
+					return (
+						<div key={idx}>
+							{data?.votes?.[idx]?._count} - {option.text}
+						</div>
+					);
+				}
+
+				return (
+					<button key={idx} onClick={() => mutate({ questionId: data?.question?.id!, option: idx })}>
+						{' '}
+						{option.text}{' '}
+					</button>
+				);
+			})}
 		</div>
 	);
 };

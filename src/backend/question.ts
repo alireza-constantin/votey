@@ -34,8 +34,22 @@ export const questionRouter = createRouter()
                     voterToken: ctx.token
                 }
             })
+            const rest = { question, vote: myVote, isOwner: question?.ownerToken === ctx.token }
 
-            return { question, vote: myVote }
+            if (rest.vote || rest.isOwner) {
+                const votes = await prisma.vote.groupBy({
+                    where: { questionsId: input.id },
+                    by: ['choice'],
+                    _count: true
+                })
+
+                return {
+                    ...rest,
+                    votes
+                }
+            }
+
+            return { ...rest, votes: undefined }
         }
     })
     .mutation('create', {
