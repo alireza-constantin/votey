@@ -30,6 +30,11 @@ model Vote {
 
   choice Int
 
+  voterToken String
+
   question    Question? @relation(fields: [questionsId], references: [id])
   questionsId String?
+
+  @@index([voterToken])
+  @@index([questionsId])
 }
