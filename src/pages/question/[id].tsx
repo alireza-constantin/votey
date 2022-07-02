@@ -28,7 +28,7 @@ const QuestionContent: React.FC<{ id: string }> = ({ id }) => {
 			{options?.map((option, idx) => {
 				if (data?.isOwner || data?.vote) {
 					return (
-						<div key={idx}>
+						<div key={idx} className={data.vote?.choice === idx ? 'underline' : ''}>
 							{data?.votes?.[idx]?._count} - {option.text}
 						</div>
 					);
