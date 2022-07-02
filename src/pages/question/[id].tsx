@@ -1,6 +1,7 @@
 import { trpc } from '@/utils/trpc';
 import { useRouter } from 'next/router';
 import React from 'react';
+import type { createQuestionType } from '@/utils/validator';
 
 const QuestionContent: React.FC<{ id: string }> = ({ id }) => {
 	const { data, isLoading } = trpc.useQuery(['questions.getById', { id }]);
@@ -9,13 +10,15 @@ const QuestionContent: React.FC<{ id: string }> = ({ id }) => {
 		return <div>Question Not Found</div>;
 	}
 
-	const options: string[] = data?.question?.options && JSON.parse(data?.question?.options);
+	const { options }: Pick<createQuestionType, 'options'> = {
+		options: data?.question?.options && JSON.parse(data?.question?.options),
+	};
 
 	return (
 		<div>
 			<h2>{data?.question?.question}</h2>
 			{options?.map((option, idx) => (
-				<div key={idx}>{option}</div>
+				<div key={idx}>{option.text}</div>
 			))}
 		</div>
 	);
