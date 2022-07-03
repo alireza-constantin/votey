@@ -2,6 +2,7 @@ import { trpc } from '@/utils/trpc';
 import { useRouter } from 'next/router';
 import React from 'react';
 import type { createQuestionType } from '@/utils/validator';
+import Vote from '@/component/Vote';
 
 const QuestionContent: React.FC<{ id: string }> = ({ id }) => {
 	const { data, isLoading } = trpc.useQuery(['questions.getById', { id }]);
@@ -15,12 +16,16 @@ const QuestionContent: React.FC<{ id: string }> = ({ id }) => {
 		return <div>Question Not Found</div>;
 	}
 
+	const voteHandler = (questionId: string, idx: number) => {
+		mutate({ questionId, option: idx });
+	};
+
 	console.log(data);
 
 	return (
 		<div>
 			{data?.isOwner && <p>You are owner</p>}
-			<h2>{data?.question?.question}</h2>
+			<h2 className="text-center my-4 font-semibold text-2xl capitalize text-gray-300">{data?.question?.question}</h2>
 			{(data?.question?.options as string[])?.map((option, idx) => {
 				if (data?.isOwner || data?.vote) {
 					return (
@@ -31,10 +36,9 @@ const QuestionContent: React.FC<{ id: string }> = ({ id }) => {
 				}
 
 				return (
-					<button key={idx} onClick={() => mutate({ questionId: data?.question?.id!, option: idx })}>
-						{' '}
-						{(option as any).text}{' '}
-					</button>
+					<div key={idx} className="flex justify-center items-center gap-3">
+						<Vote onVote={voteHandler} idx={idx} questionId={data?.question?.id!} option={option as any} />
+					</div>
 				);
 			})}
 		</div>
