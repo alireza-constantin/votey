@@ -6,8 +6,8 @@ import { motion } from 'framer-motion';
 const QuestionCard: React.FC<{
 	question: Question;
 	i: number;
-	//   copyToClipboard: (question: Question) => void;
-}> = ({ question, i }) => {
+	copyToClipboard: (question: Question) => void;
+}> = ({ question, i, copyToClipboard }) => {
 	const spring = {
 		type: 'spring',
 		stiffness: 150,
@@ -38,6 +38,7 @@ const QuestionCard: React.FC<{
 						className="cursor-pointer self-end mt-6  p-2 hover:opacity-60"
 						onClick={(e) => {
 							e.stopPropagation();
+							copyToClipboard(question);
 						}}
 					>
 						<svg
