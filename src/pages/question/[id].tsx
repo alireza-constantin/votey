@@ -15,21 +15,17 @@ const QuestionContent: React.FC<{ id: string }> = ({ id }) => {
 		return <div>Question Not Found</div>;
 	}
 
-	const { options }: Pick<createQuestionType, 'options'> = {
-		options: data?.question?.options && JSON.parse(data?.question?.options),
-	};
-
 	console.log(data);
 
 	return (
 		<div>
 			{data?.isOwner && <p>You are owner</p>}
 			<h2>{data?.question?.question}</h2>
-			{options?.map((option, idx) => {
+			{(data?.question?.options as string[])?.map((option, idx) => {
 				if (data?.isOwner || data?.vote) {
 					return (
 						<div key={idx} className={data.vote?.choice === idx ? 'underline' : ''}>
-							{data?.votes?.[idx]?._count ?? 0} - {option.text}
+							{data?.votes?.[idx]?._count ?? 0} - {(option as any).text}
 						</div>
 					);
 				}
@@ -37,7 +33,7 @@ const QuestionContent: React.FC<{ id: string }> = ({ id }) => {
 				return (
 					<button key={idx} onClick={() => mutate({ questionId: data?.question?.id!, option: idx })}>
 						{' '}
-						{option.text}{' '}
+						{(option as any).text}{' '}
 					</button>
 				);
 			})}

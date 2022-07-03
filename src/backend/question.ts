@@ -59,7 +59,7 @@ export const questionRouter = createRouter()
             return await prisma.question.create({
                 data: {
                     question: input.question,
-                    options: JSON.stringify(input.options),
+                    options: input.options,
                     ownerToken: ctx.token || ''
                 }
             })
