@@ -5,13 +5,14 @@ import Loader from '@/component/Loader';
 import Head from 'next/head';
 import { useState } from 'react';
 import { Question } from '@prisma/client';
-import { getBaseUrl } from './_app';
 
 const Home: NextPage = () => {
 	const { data, isLoading } = trpc.useQuery(['questions.getAllMyQuestions']);
 	const [showToast, setShowToast] = useState(false);
 
-	const url = getBaseUrl();
+	const url = process.env.NEXT_PUBLIC_VERCEL_URL
+		? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+		: `http://localhost:${process.env.PORT ?? 3000}`;
 
 	const copyToClipboard = (question: Question) => {
 		navigator.clipboard.writeText(`${url}/question/${question.id}`);
