@@ -3,9 +3,9 @@ import * as trpcNext from "@trpc/server/adapters/next";
 
 // The app's context - is generated for each incoming request
 export async function createContext(opts?: trpcNext.CreateNextContextOptions) {
-    const cookie = opts?.req.cookies['poll-cookie']
+    const cookie = opts?.req.cookies['poll-token']
 
-    return { token: cookie }
+    return { token: cookie, req: opts?.req }
 }
 type Context = trpc.inferAsyncReturnType<typeof createContext>;
 

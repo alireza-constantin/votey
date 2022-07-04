@@ -7,6 +7,7 @@ import { createQuestionValidator } from '@/utils/validator';
 export const questionRouter = createRouter()
     .query('getAllMyQuestions', {
         async resolve({ ctx }) {
+            if (!ctx.token) return []
             return await prisma.question.findMany({
                 where: {
                     ownerToken: {

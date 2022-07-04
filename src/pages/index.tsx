@@ -20,7 +20,7 @@ const Home: NextPage = () => {
 		setTimeout(() => setShowToast(false), 1500);
 	};
 
-	if (isLoading || !data)
+	if (isLoading)
 		return (
 			<div>
 				<Loader />
