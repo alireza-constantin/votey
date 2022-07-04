@@ -1,5 +1,7 @@
 import type { FC } from 'react';
 
+import { motion } from 'framer-motion';
+
 const VotePercent: FC<{
 	choice: number | undefined;
 	count: number;
@@ -11,6 +13,13 @@ const VotePercent: FC<{
 		if (totalVotes === 0 || count === 0) return 0;
 		return (count / totalVotes) * 100;
 	}
+
+	const spring = {
+		type: 'spring',
+		stiffness: 120,
+		damping: 8,
+		mass: 1,
+	};
 
 	return (
 		<div className="mb-4 md:w-2/3 mx-auto">
@@ -35,7 +44,13 @@ const VotePercent: FC<{
 				<span className="text-sm font-medium text-gray-400">{calcPercent(totalVotes, count).toFixed(2)}%</span>
 			</div>
 			<div className="w-full bg-slate-700 rounded-lg h-5">
-				<div className="bg-fuchsia-500/70 h-5 rounded-lg" style={{ width: `${calcPercent(totalVotes, count)}%` }}></div>
+				<motion.div
+					transition={spring}
+					initial={{ width: 0 }}
+					animate={{ width: `${calcPercent(totalVotes, count)}%` }}
+					className="bg-fuchsia-500/70 h-5 rounded-lg"
+					// style={{ width: `${calcPercent(totalVotes, count)}%` }}
+				></motion.div>
 			</div>
 		</div>
 	);
