@@ -4,17 +4,24 @@ import React from 'react';
 import type { createQuestionType } from '@/utils/validator';
 import Vote from '@/component/Vote';
 import VotePercent from '@/component/VotePercent';
+import Loader from '@/component/Loader';
 
 const QuestionContent: React.FC<{ id: string }> = ({ id }) => {
 	const { data, isLoading } = trpc.useQuery(['questions.getById', { id }]);
 
 	let totalVotes = 0;
 	// voting mutation
-	const { mutate, data: voteResponse } = trpc.useMutation(['questions.vote'], {
+	const {
+		mutate,
+		data: voteResponse,
+		isLoading: mutateLoading,
+	} = trpc.useMutation(['questions.vote'], {
 		onSuccess: () => {
 			window.location.reload();
 		},
 	});
+
+	if (isLoading) return <Loader />;
 
 	if (!isLoading && !data) {
 		return <div>Question Not Found</div>;
@@ -35,7 +42,7 @@ const QuestionContent: React.FC<{ id: string }> = ({ id }) => {
 	console.log(data);
 
 	return (
-		<div>
+		<div className="mt-16">
 			<h2 className="text-center my-4 font-semibold text-2xl capitalize text-gray-300">{data?.question?.question}</h2>
 			{(data?.question?.options as string[])?.map((option, idx) => {
 				if (data?.isOwner || data?.vote) {
@@ -53,7 +60,13 @@ const QuestionContent: React.FC<{ id: string }> = ({ id }) => {
 
 				return (
 					<div key={idx} className="flex justify-center items-center gap-3">
-						<Vote onVote={voteHandler} idx={idx} questionId={data?.question?.id!} option={option as any} />
+						<Vote
+							btnDisable={mutateLoading}
+							onVote={voteHandler}
+							idx={idx}
+							questionId={data?.question?.id!}
+							option={option as any}
+						/>
 					</div>
 				);
 			})}
@@ -85,7 +98,11 @@ const QuestionPage = () => {
 	const { id } = query;
 
 	if (!isReady) {
-		return <div>Loading...</div>;
+		return (
+			<div>
+				<Loader />
+			</div>
+		);
 	}
 	if (!id || typeof id !== 'string') return <div>No Id</div>;
 

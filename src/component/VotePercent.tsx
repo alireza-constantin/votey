@@ -12,8 +12,6 @@ const VotePercent: FC<{
 		return (count / totalVotes) * 100;
 	}
 
-	console.log(calcPercent(totalVotes, count));
-
 	return (
 		<div className="mb-4 md:w-2/3 mx-auto">
 			<div className="flex justify-between mb-2">
