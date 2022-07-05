@@ -1,10 +1,10 @@
 import { trpc } from '@/utils/trpc';
 import { useRouter } from 'next/router';
 import React from 'react';
-import type { createQuestionType } from '@/utils/validator';
 import Vote from '@/component/Vote';
 import VotePercent from '@/component/VotePercent';
 import Loader from '@/component/Loader';
+import { formatDistance } from 'date-fns';
 
 const QuestionContent: React.FC<{ id: string }> = ({ id }) => {
 	const { data, isLoading } = trpc.useQuery(['questions.getById', { id }]);
@@ -43,9 +43,16 @@ const QuestionContent: React.FC<{ id: string }> = ({ id }) => {
 
 	return (
 		<div className="mt-16">
-			<h2 className="text-center my-4 font-semibold text-2xl capitalize text-gray-300">{data?.question?.question}</h2>
+			<div className="flex justify-between items-center md:w-2/3 mx-auto mb-6">
+				<h2 className="text-center my-4 font-semibold text-2xl capitalize text-gray-300">{data?.question?.question}</h2>
+				<div className="text-sm text-gray-400">
+					{data?.isEnded ? 'Finished ' : 'Ends '}{' '}
+					{data?.question?.endsAt && formatDistance(data.question.endsAt, new Date(), { addSuffix: true })}
+					{!data?.question?.endsAt && 'in infinite time'}
+				</div>
+			</div>
 			{(data?.question?.options as string[])?.map((option, idx) => {
-				if (data?.isOwner || data?.vote) {
+				if (data?.isOwner || data?.vote || data?.isEnded) {
 					return (
 						<VotePercent
 							totalVotes={totalVotes}

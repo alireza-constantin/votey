@@ -4,6 +4,7 @@ import { add } from 'date-fns';
 
 const EndTime: FC<{ handler: UseFormRegisterReturn<'endsAt'> }> = ({ handler }) => {
 	const options = [
+		{ label: '1 Min', value: add(new Date(), { minutes: 1 }).toString() },
 		{ label: '1 Hour', value: add(new Date(), { hours: 1 }).toString() },
 		{ label: '3 Hour', value: add(new Date(), { hours: 3 }).toString() },
 		{ label: '5 Hour', value: add(new Date(), { hours: 5 }).toString() },

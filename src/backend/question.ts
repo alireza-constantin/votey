@@ -28,13 +28,18 @@ export const questionRouter = createRouter()
                 }
             })
 
+            let isEnded = false;
+            if (question?.endsAt) {
+                isEnded = new Date() > question?.endsAt
+            }
+
             const myVote = await prisma.vote.findFirst({
                 where: {
                     questionsId: input.id,
                     voterToken: ctx.token
                 }
             })
-            const rest = { question, vote: myVote, isOwner: question?.ownerToken === ctx.token }
+            const rest = { question, vote: myVote, isOwner: question?.ownerToken === ctx.token, isEnded }
 
             if (rest.vote || rest.isOwner) {
                 const votes = await prisma.vote.groupBy({
