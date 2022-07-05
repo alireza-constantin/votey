@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { createQuestionType, createQuestionValidator } from '@/utils/validator';
 import { useRouter } from 'next/router';
 import Spinner from '@/component/Spinner';
+import EndTime from '@/component/endTime';
 
 const CreateVote: React.FC = () => {
 	const router = useRouter();
@@ -15,7 +16,6 @@ const CreateVote: React.FC = () => {
 		reset,
 		control,
 		formState: { errors },
-		setError,
 	} = useForm<createQuestionType>({
 		resolver: zodResolver(createQuestionValidator),
 		defaultValues: {
@@ -40,7 +40,7 @@ const CreateVote: React.FC = () => {
 
 	const onCreateVote = (data: createQuestionType) => {
 		console.log(data);
-		mutate({ question: data.question, options: data.options });
+		// mutate({ question: data.question, options: data.options, endsAt: '' });
 	};
 
 	return (
@@ -60,6 +60,9 @@ const CreateVote: React.FC = () => {
 						placeholder="Chicken or egg? which was first?"
 					/>
 					<p className="text-red-400 mt-1 text-sm">{errors.question?.message}</p>
+					{/* <div className="items-start"> */}
+					<EndTime handler={register('endsAt')} />
+					{/* </div> */}
 					<label>Options</label>
 					<div className="grid grid-cols-1 w-full gap-x-5 gap-y-3 md:grid-cols-2">
 						{/* field array */}
