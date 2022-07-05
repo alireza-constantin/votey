@@ -39,8 +39,7 @@ const CreateVote: React.FC = () => {
 	});
 
 	const onCreateVote = (data: createQuestionType) => {
-		console.log(data);
-		// mutate({ question: data.question, options: data.options, endsAt: '' });
+		mutate({ question: data.question, options: data.options, endsAt: data.endsAt ? new Date(data.endsAt) : null });
 	};
 
 	return (

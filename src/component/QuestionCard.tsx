@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { Question } from '@prisma/client';
 import { motion } from 'framer-motion';
+import { formatDistance } from 'date-fns';
 
 const QuestionCard: React.FC<{
 	question: Question;
@@ -46,6 +47,23 @@ const QuestionCard: React.FC<{
 								</svg>
 							</span>
 							Created on {question.createdAt.toDateString()}
+						</p>
+
+						<p className="text-xs flex gap-1 items-center mt-4 text-white/30">
+							<span>
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									className="h-4 w-4"
+									fill="none"
+									viewBox="0 0 24 24"
+									stroke="currentColor"
+									strokeWidth={2}
+								>
+									<path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+								</svg>
+							</span>
+							Ends {question.endsAt && formatDistance(question.endsAt, new Date(), { addSuffix: true })}
+							{!question.endsAt && 'in infinite time'}
 						</p>
 					</div>
 					<div

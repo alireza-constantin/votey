@@ -60,7 +60,8 @@ export const questionRouter = createRouter()
                 data: {
                     question: input.question,
                     options: input.options,
-                    ownerToken: ctx.token || ''
+                    ownerToken: ctx.token || '',
+                    endsAt: input.endsAt
                 }
             })
         }

@@ -1,18 +1,20 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import type { UseFormRegisterReturn } from 'react-hook-form';
+import { add } from 'date-fns';
 
 const EndTime: FC<{ handler: UseFormRegisterReturn<'endsAt'> }> = ({ handler }) => {
 	const options = [
-		{ label: '1 Hour', value: '1h' },
-		{ label: '3 Hour', value: '3h' },
-		{ label: '5 Hour', value: '5h' },
-		{ label: '12 Hour', value: '12h' },
-		{ label: '24 Hour', value: '24h' },
-		{ label: '3 days', value: '3d' },
-		{ label: '5 days', value: '5d' },
-		{ label: '10 days', value: '10d' },
-		{ label: '15 days', value: '15d' },
-		{ label: '1 month', value: '15m' },
+		{ label: '1 Hour', value: add(new Date(), { hours: 1 }).toString() },
+		{ label: '3 Hour', value: add(new Date(), { hours: 3 }).toString() },
+		{ label: '5 Hour', value: add(new Date(), { hours: 5 }).toString() },
+		{ label: '12 Hour', value: add(new Date(), { hours: 5 }).toString() },
+		{ label: '24 Hour', value: add(new Date(), { hours: 24 }).toString() },
+		{ label: '3 days', value: add(new Date(), { days: 3 }).toString() },
+		{ label: '5 days', value: add(new Date(), { days: 5 }).toString() },
+		{ label: '10 days', value: add(new Date(), { days: 10 }).toString() },
+		{ label: '15 days', value: add(new Date(), { days: 15 }).toString() },
+		{ label: '1 month', value: add(new Date(), { months: 1 }).toString() },
+		{ label: 'Infinite', value: '' },
 	];
 
 	return (
@@ -22,8 +24,8 @@ const EndTime: FC<{ handler: UseFormRegisterReturn<'endsAt'> }> = ({ handler }) 
 				{...handler}
 				className="peer appearance-none p-2 cursor-pointer bg-slate-800/60 text-sm  font-normal rounded-md text-slate-300 outline-none focus:ring-4 ring-slate-600/40"
 			>
-				{options.map((option) => (
-					<option className="outline-none bg-slate-800 mb-1" key={option.value} value={option.value}>
+				{options.map((option, idx) => (
+					<option className="outline-none bg-slate-800 mb-1" key={idx} value={option.value}>
 						{option.label}
 					</option>
 				))}
