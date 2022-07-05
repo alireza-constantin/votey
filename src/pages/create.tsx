@@ -15,6 +15,7 @@ const CreateVote: React.FC = () => {
 		reset,
 		control,
 		formState: { errors },
+		setError,
 	} = useForm<createQuestionType>({
 		resolver: zodResolver(createQuestionValidator),
 		defaultValues: {
@@ -97,11 +98,12 @@ const CreateVote: React.FC = () => {
 				<button
 					type="button"
 					className="mt-6 flex text-gray-400 justify-start gap-1 text-xs items-center hover:text-gray-500"
-					onClick={() =>
+					onClick={() => {
+						if (fields.length >= 10) return;
 						append({
 							text: '',
-						})
-					}
+						});
+					}}
 				>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"

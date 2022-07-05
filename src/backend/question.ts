@@ -1,4 +1,3 @@
-import * as trpc from '@trpc/server';
 import { prisma } from '@/db/client'
 import { z } from 'zod';
 import { createRouter } from './context';

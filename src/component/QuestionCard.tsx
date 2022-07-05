@@ -32,7 +32,21 @@ const QuestionCard: React.FC<{
 						<h1 className="text-lg font-bold capitalize" key={question.id}>
 							{question.question}
 						</h1>
-						<p className="text-xs mt-4 text-white/30">Created on {question.createdAt.toDateString()}</p>
+						<p className="text-xs flex gap-1 items-center mt-4 text-white/30">
+							<span>
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									className="h-4 w-4"
+									fill="none"
+									viewBox="0 0 24 24"
+									stroke="currentColor"
+									strokeWidth={2}
+								>
+									<path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+								</svg>
+							</span>
+							Created on {question.createdAt.toDateString()}
+						</p>
 					</div>
 					<div
 						className="cursor-pointer self-end mt-6  p-2 hover:opacity-60"
