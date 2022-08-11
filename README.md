@@ -22,7 +22,7 @@ https://votey-one.vercel.app/
 
 ## Tech Stack
 
-**React, Nextjs, Typescript, Trpc, Prisma, TailwindCSS**
+**React, Nextjs, Typescript, Trpc, Prisma, TailwindCSS, framer-motion**
 
 **DB:** Cloud MySql from [Planetscale](https://planetscale.com/)
 

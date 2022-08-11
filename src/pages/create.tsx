@@ -6,7 +6,7 @@ import { createQuestionType, createQuestionValidator } from '@/utils/validator';
 import { useRouter } from 'next/router';
 import Spinner from '@/component/Spinner';
 import EndTime from '@/component/endTime';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const CreateVote: React.FC = () => {
 	const router = useRouter();
@@ -65,42 +65,45 @@ const CreateVote: React.FC = () => {
 					<label>Options</label>
 					<div className="grid grid-cols-1 w-full gap-x-5 gap-y-3 md:grid-cols-2">
 						{/* field array */}
-						{fields.map((field, index) => {
-							return (
-								<motion.div
-									initial={{ opacity: 0, scale: 0.7 }}
-									animate={{ opacity: 1, scale: 1 }}
-									transition={{ duration: 0.4, ease: [0.77, 0.67, 0.43, 0.37] }}
-									key={field.id}
-									className="w-full flex gap-3"
-								>
-									<input
-										placeholder="name"
-										{...register(`options.${index}.text` as const, {
-											required: true,
-										})}
-										// className={errors?.options?.[index]?.text ? 'error' : ''}
-										className="outline-none focus:ring-4 ring-slate-600/40 bg-slate-800/60 text-sm  font-normal rounded-md text-slate-300 placeholder:text-gray-400  p-3 flex-1 "
-									/>
-									<button className="hover:text-gray-500" type="button" onClick={() => remove(index)}>
-										<svg
-											xmlns="http://www.w3.org/2000/svg"
-											className="h-6 w-6"
-											fill="none"
-											viewBox="0 0 24 24"
-											stroke="currentColor"
-											strokeWidth={2}
-										>
-											<path
-												strokeLinecap="round"
-												strokeLinejoin="round"
-												d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-											/>
-										</svg>
-									</button>
-								</motion.div>
-							);
-						})}
+						<AnimatePresence>
+							{fields.map((field, index) => {
+								return (
+									<motion.div
+										initial={index > 1 ? { opacity: 0, scale: 0.7 } : undefined}
+										animate={{ opacity: 1, scale: 1 }}
+										exit={{ opacity: 0, scale: 0.5 }}
+										transition={{ duration: 0.4, ease: [0.77, 0.67, 0.43, 0.37] }}
+										key={field.id}
+										className="w-full flex gap-3"
+									>
+										<input
+											placeholder="name"
+											{...register(`options.${index}.text` as const, {
+												required: true,
+											})}
+											// className={errors?.options?.[index]?.text ? 'error' : ''}
+											className="outline-none focus:ring-4 ring-slate-600/40 bg-slate-800/60 text-sm  font-normal rounded-md text-slate-300 placeholder:text-gray-400  p-3 flex-1 "
+										/>
+										<button className="hover:text-gray-500" type="button" onClick={() => remove(index)}>
+											<svg
+												xmlns="http://www.w3.org/2000/svg"
+												className="h-6 w-6"
+												fill="none"
+												viewBox="0 0 24 24"
+												stroke="currentColor"
+												strokeWidth={2}
+											>
+												<path
+													strokeLinecap="round"
+													strokeLinejoin="round"
+													d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+												/>
+											</svg>
+										</button>
+									</motion.div>
+								);
+							})}
+						</AnimatePresence>
 					</div>
 				</div>
 				<button
