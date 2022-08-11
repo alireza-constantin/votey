@@ -9,7 +9,8 @@ export function middleware(req: NextRequest, ev: NextFetchEvent) {
     const res = NextResponse.redirect(req.nextUrl)
     res.cookie('poll-token', random, {
         sameSite: 'strict',
-        httpOnly: true
+        httpOnly: true,
+        maxAge: 3600 * 24 * 30 // one month
     })
 
     return res;
