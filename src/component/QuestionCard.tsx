@@ -6,23 +6,13 @@ import { formatDistance } from 'date-fns';
 
 const QuestionCard: React.FC<{
 	question: Question;
-	i: number;
 	copyToClipboard: (question: Question) => void;
-}> = ({ question, i, copyToClipboard }) => {
-	const spring = {
-		type: 'spring',
-		stiffness: 150,
-		damping: 11,
-		mass: 1,
-	};
-
+}> = ({ question, copyToClipboard }) => {
 	return (
 		<motion.div
-			animate={{ x: 0, opacity: 1 }}
-			layout
-			initial={{ x: i * -800, opacity: 0 }}
-			// transition={{ duration: 3, delay: i * 0.3 }}
-			transition={spring}
+			initial={{ opacity: 0, scale: 0.7 }}
+			animate={{ opacity: 1, scale: 1 }}
+			transition={{ duration: 0.4, ease: [0.77, 0.67, 0.43, 0.37] }}
 		>
 			<Link href={`/question/${question.id}`}>
 				<div

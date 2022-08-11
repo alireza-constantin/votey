@@ -27,13 +27,6 @@ const VotePercent: FC<{
 		}
 	}, [totalVotes, index, optionId]);
 
-	const spring = {
-		type: 'spring',
-		stiffness: 120,
-		damping: 8,
-		mass: 1,
-	};
-
 	return (
 		<div className="mb-4 md:w-2/3 mx-auto">
 			<div className="flex justify-between mb-2">
@@ -58,7 +51,7 @@ const VotePercent: FC<{
 			</div>
 			<div className="w-full bg-slate-700 rounded-lg h-5">
 				<motion.div
-					transition={spring}
+					transition={{ duration: '1' }}
 					initial={{ width: 0 }}
 					animate={{ width: `${percent}%` }}
 					className="bg-fuchsia-500/70 h-5 rounded-lg"

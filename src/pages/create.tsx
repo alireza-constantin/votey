@@ -6,6 +6,7 @@ import { createQuestionType, createQuestionValidator } from '@/utils/validator';
 import { useRouter } from 'next/router';
 import Spinner from '@/component/Spinner';
 import EndTime from '@/component/endTime';
+import { motion } from 'framer-motion';
 
 const CreateVote: React.FC = () => {
 	const router = useRouter();
@@ -59,15 +60,20 @@ const CreateVote: React.FC = () => {
 						placeholder="Chicken or egg? which was first?"
 					/>
 					<p className="text-red-400 mt-1 text-sm">{errors.question?.message}</p>
-					{/* <div className="items-start"> */}
+
 					<EndTime handler={register('endsAt')} />
-					{/* </div> */}
 					<label>Options</label>
 					<div className="grid grid-cols-1 w-full gap-x-5 gap-y-3 md:grid-cols-2">
 						{/* field array */}
 						{fields.map((field, index) => {
 							return (
-								<div key={field.id} className="w-full flex gap-3">
+								<motion.div
+									initial={{ opacity: 0, scale: 0.7 }}
+									animate={{ opacity: 1, scale: 1 }}
+									transition={{ duration: 0.4, ease: [0.77, 0.67, 0.43, 0.37] }}
+									key={field.id}
+									className="w-full flex gap-3"
+								>
 									<input
 										placeholder="name"
 										{...register(`options.${index}.text` as const, {
@@ -92,7 +98,7 @@ const CreateVote: React.FC = () => {
 											/>
 										</svg>
 									</button>
-								</div>
+								</motion.div>
 							);
 						})}
 					</div>

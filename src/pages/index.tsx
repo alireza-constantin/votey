@@ -35,11 +35,11 @@ const Home: NextPage = () => {
 
 			<div className="grid grid-cols-1 gap-y-5 md:grid-cols-3 lg:grid-cols-4 md:gap-x-5 mt-10">
 				{data?.map((question, idx) => (
-					<QuestionCard key={question.id} question={question} i={idx + 1} copyToClipboard={copyToClipboard} />
+					<QuestionCard key={question.id} question={question} copyToClipboard={copyToClipboard} />
 				))}
 			</div>
 			{showToast && (
-				<div className="absolute bottom-5 right-10 flex items-center justify-center bg-slate-50/10 p-3 rounded-md w-1/5">
+				<div className="absolute bottom-5 right-10 flex items-center justify-center bg-slate-50/10 p-3 rounded-md w-2/5 md:w-1/5">
 					<span className="text-xs font-semibold">Link Copied to Clipboard!</span>
 				</div>
 			)}
