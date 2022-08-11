@@ -1,4 +1,5 @@
 import type { FC } from 'react';
+import { useState, useEffect } from 'react';
 
 import { motion } from 'framer-motion';
 
@@ -8,11 +9,23 @@ const VotePercent: FC<{
 	text: string;
 	index: number;
 	totalVotes: number;
-}> = ({ choice, count, text, index, totalVotes }) => {
+	optionId: any;
+}> = ({ choice, count, text, index, totalVotes, optionId }) => {
 	function calcPercent(totalVotes: number, count: number): number {
 		if (totalVotes === 0 || count === 0) return 0;
 		return (count / totalVotes) * 100;
 	}
+
+	const [percent, setPercent] = useState(0);
+
+	useEffect(() => {
+		for (let vote of optionId) {
+			if (vote.choice === index) {
+				setPercent(calcPercent(totalVotes, vote._count));
+				// console.log(text, optionId[0]._count);
+			}
+		}
+	}, [totalVotes, index, optionId]);
 
 	const spring = {
 		type: 'spring',
@@ -41,13 +54,13 @@ const VotePercent: FC<{
 					</span>{' '}
 					{text}
 				</span>
-				<span className="text-sm font-medium text-gray-400">{calcPercent(totalVotes, count).toFixed(2)}%</span>
+				<span className="text-sm font-medium text-gray-400">{percent.toFixed(2)}%</span>
 			</div>
 			<div className="w-full bg-slate-700 rounded-lg h-5">
 				<motion.div
 					transition={spring}
 					initial={{ width: 0 }}
-					animate={{ width: `${calcPercent(totalVotes, count)}%` }}
+					animate={{ width: `${percent}%` }}
 					className="bg-fuchsia-500/70 h-5 rounded-lg"
 					// style={{ width: `${calcPercent(totalVotes, count)}%` }}
 				></motion.div>

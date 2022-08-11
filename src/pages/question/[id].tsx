@@ -6,7 +6,6 @@ import VotePercent from '@/component/VotePercent';
 import Loader from '@/component/Loader';
 import { formatDistance } from 'date-fns';
 import OwnerBadge from '@/component/OwnerBadge';
-import { Prisma } from '@prisma/client';
 
 const QuestionContent: React.FC<{ id: string }> = ({ id }) => {
 	const { data, isLoading } = trpc.useQuery(['questions.getById', { id }]);
@@ -64,6 +63,7 @@ const QuestionContent: React.FC<{ id: string }> = ({ id }) => {
 							choice={data.vote?.choice}
 							text={(option as any).text}
 							count={data?.votes?.[idx]?._count ?? 0}
+							optionId={data?.votes}
 						/>
 					);
 				}
