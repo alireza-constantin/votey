@@ -10,8 +10,6 @@ interface VoteProps {
 }
 
 const Vote: React.FC<VoteProps> = ({ onVote, option, questionId, idx, btnDisable }) => {
-	console.log(btnDisable);
-
 	return (
 		<motion.button
 			initial={{ opacity: 0, scale: 0.7 }}

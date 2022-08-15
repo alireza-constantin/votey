@@ -17,10 +17,10 @@ const QuestionCard: React.FC<{
 			<Link href={`/question/${question.id}`}>
 				<div
 					key={question.id}
-					className="flex flex-col justify-between cursor-pointer rounded-md px-4 py-2 bg-indigo-900/20 shadow-xl hover:shadow-2xl  shadow-black/50"
+					className="flex flex-col justify-between cursor-pointer rounded-md px-4 pb-2 pt-4 bg-indigo-900/20 shadow-xl hover:shadow-2xl  shadow-black/50"
 				>
 					<div>
-						<h1 className="text-lg font-bold capitalize" key={question.id}>
+						<h1 className="text-lg break-words font-bold capitalize" key={question.id}>
 							{question.question}
 						</h1>
 						<p className="text-xs flex gap-1 items-center mt-4 text-white/30">

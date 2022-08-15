@@ -20,7 +20,7 @@ const CreateVote: React.FC = () => {
 	} = useForm<createQuestionType>({
 		resolver: zodResolver(createQuestionValidator),
 		defaultValues: {
-			options: [{ text: 'yes' }, { text: 'no' }],
+			options: [{ text: 'chicken' }, { text: 'egg' }],
 		},
 	});
 
@@ -71,7 +71,7 @@ const CreateVote: React.FC = () => {
 									<motion.div
 										initial={index > 1 ? { opacity: 0, scale: 0.7 } : undefined}
 										animate={{ opacity: 1, scale: 1 }}
-										exit={{ opacity: 0, scale: 0.5 }}
+										exit={index > 1 ? { opacity: 0, scale: 0.7 } : undefined}
 										transition={{ duration: 0.4, ease: [0.77, 0.67, 0.43, 0.37] }}
 										key={field.id}
 										className="w-full flex gap-3"

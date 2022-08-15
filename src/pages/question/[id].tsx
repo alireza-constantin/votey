@@ -87,9 +87,9 @@ const QuestionContent: React.FC<{ id: string }> = ({ id }) => {
 
 const CardHeader = ({ question, text, date }: { question: string; text: string; date: string }) => {
 	return (
-		<div className="flex justify-between items-center md:w-2/3 mx-auto mb-6">
-			<h2 className="text-center my-4 font-semibold text-2xl capitalize text-gray-300">{question}</h2>
-			<div className="text-sm text-gray-400">
+		<div className="flex flex-col items-center justify-between gap-6 md:w-2/3 mx-auto mb-8">
+			<h2 className="text-center break-words font-semibold text-xl md:text-2xl capitalize text-gray-300">{question}</h2>
+			<div className="text-xs font-bold text-gray-400">
 				<span>{text}</span>
 				<span>{date}</span>
 			</div>

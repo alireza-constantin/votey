@@ -18,11 +18,13 @@ const VotePercent: FC<{
 
 	const [percent, setPercent] = useState(0);
 
+	console.log(optionId);
+
 	useEffect(() => {
+		if (!optionId?.length) return;
 		for (let vote of optionId) {
 			if (vote.choice === index) {
 				setPercent(calcPercent(totalVotes, vote._count));
-				// console.log(text, optionId[0]._count);
 			}
 		}
 	}, [totalVotes, index, optionId]);
