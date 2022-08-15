@@ -5,17 +5,14 @@ import { add } from 'date-fns';
 const EndTime: FC<{ handler: UseFormRegisterReturn<'endsAt'> }> = ({ handler }) => {
 	const options = [
 		{ label: '1 Min', value: add(new Date(), { minutes: 1 }).toString() },
+		{ label: '3 Min', value: add(new Date(), { minutes: 3 }).toString() },
+		{ label: '15 Min', value: add(new Date(), { minutes: 15 }).toString() },
+		{ label: '30 Min', value: add(new Date(), { minutes: 30 }).toString() },
 		{ label: '1 Hour', value: add(new Date(), { hours: 1 }).toString() },
 		{ label: '3 Hour', value: add(new Date(), { hours: 3 }).toString() },
 		{ label: '5 Hour', value: add(new Date(), { hours: 5 }).toString() },
 		{ label: '12 Hour', value: add(new Date(), { hours: 5 }).toString() },
 		{ label: '24 Hour', value: add(new Date(), { hours: 24 }).toString() },
-		{ label: '3 days', value: add(new Date(), { days: 3 }).toString() },
-		{ label: '5 days', value: add(new Date(), { days: 5 }).toString() },
-		{ label: '10 days', value: add(new Date(), { days: 10 }).toString() },
-		{ label: '15 days', value: add(new Date(), { days: 15 }).toString() },
-		{ label: '1 month', value: add(new Date(), { months: 1 }).toString() },
-		{ label: 'Infinite', value: '' },
 	];
 
 	return (
