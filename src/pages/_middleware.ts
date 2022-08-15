@@ -10,7 +10,7 @@ export function middleware(req: NextRequest, ev: NextFetchEvent) {
     res.cookie('poll-token', random, {
         sameSite: 'strict',
         httpOnly: true,
-        maxAge: 3600 * 24 * 30 // one month
+        maxAge: 43800 * 60 * 1000 // one month
     })
 
     return res;
