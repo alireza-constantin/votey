@@ -32,9 +32,9 @@ const Home: NextPage = () => {
 			<Head>
 				<title>Home | Votey</title>
 			</Head>
-
-			<div className="grid grid-cols-1 gap-y-5 md:grid-cols-3 lg:grid-cols-4 md:gap-x-5 mt-10">
-				{data?.map((question, idx) => (
+			{/* grid-cols-1  md:grid-cols-3 lg:grid-cols-4 md:gap-x-5 */}
+			<div className="grid gap-y-5 grid-cols-1  md:grid-cols-3 lg:grid-cols-4 md:gap-x-5 mt-10">
+				{data?.map((question) => (
 					<QuestionCard key={question.id} question={question} copyToClipboard={copyToClipboard} />
 				))}
 			</div>
