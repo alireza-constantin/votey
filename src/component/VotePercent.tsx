@@ -5,29 +5,15 @@ import { motion } from 'framer-motion';
 
 const VotePercent: FC<{
 	choice: number | undefined;
-	count: number;
 	text: string;
 	index: number;
 	totalVotes: number;
-	optionId: any;
-}> = ({ choice, count, text, index, totalVotes, optionId }) => {
+	voteCount: any;
+}> = ({ choice, text, index, totalVotes, voteCount }) => {
 	function calcPercent(totalVotes: number, count: number): number {
-		if (totalVotes === 0 || count === 0) return 0;
+		if (totalVotes === 0 || count === 0 || !count) return 0;
 		return (count / totalVotes) * 100;
 	}
-
-	const [percent, setPercent] = useState(0);
-
-	console.log(optionId);
-
-	useEffect(() => {
-		if (!optionId?.length) return;
-		for (let vote of optionId) {
-			if (vote.choice === index) {
-				setPercent(calcPercent(totalVotes, vote._count));
-			}
-		}
-	}, [totalVotes, index, optionId]);
 
 	return (
 		<div className="mb-4 md:w-2/3 mx-auto">
@@ -49,13 +35,13 @@ const VotePercent: FC<{
 					</span>{' '}
 					{text}
 				</span>
-				<span className="text-sm font-medium text-gray-400">{percent.toFixed(2)}%</span>
+				<span className="text-sm font-medium text-gray-400">{calcPercent(totalVotes, voteCount).toFixed(2)}%</span>
 			</div>
 			<div className="w-full bg-slate-700 rounded-lg h-5">
 				<motion.div
 					transition={{ duration: '1' }}
 					initial={{ width: 0 }}
-					animate={{ width: `${percent}%` }}
+					animate={{ width: `${calcPercent(totalVotes, voteCount)}%` }}
 					className="bg-fuchsia-500/70 h-5 rounded-lg"
 					// style={{ width: `${calcPercent(totalVotes, count)}%` }}
 				></motion.div>

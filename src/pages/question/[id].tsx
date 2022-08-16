@@ -6,9 +6,11 @@ import VotePercent from '@/component/VotePercent';
 import Loader from '@/component/Loader';
 import { formatDistance } from 'date-fns';
 import OwnerBadge from '@/component/OwnerBadge';
+import { useMemo, useState } from 'react';
 
 const QuestionContent: React.FC<{ id: string }> = ({ id }) => {
 	const { data, isLoading } = trpc.useQuery(['questions.getById', { id }]);
+	const [voteCount, setVoteCount] = useState<{ [count: number]: number } | undefined>({});
 
 	let totalVotes = 0;
 	// voting mutation
@@ -21,6 +23,16 @@ const QuestionContent: React.FC<{ id: string }> = ({ id }) => {
 			window.location.reload();
 		},
 	});
+
+	useMemo(() => {
+		console.log('use memo called');
+		const voteCount = data?.votes?.reduce<{ [choice: number]: number }>((prev, next) => {
+			prev[next.choice] = next._count;
+			return prev;
+		}, {});
+
+		setVoteCount(voteCount);
+	}, [data?.votes]);
 
 	if (isLoading) return <Loader />;
 
@@ -40,7 +52,7 @@ const QuestionContent: React.FC<{ id: string }> = ({ id }) => {
 
 	if (data && data != undefined) getTotalVotes(data.votes);
 
-	console.log(data);
+	console.log(voteCount);
 
 	return (
 		<div className="mt-16">
@@ -62,8 +74,7 @@ const QuestionContent: React.FC<{ id: string }> = ({ id }) => {
 							index={idx}
 							choice={data.vote?.choice}
 							text={(option as any).text}
-							count={data?.votes?.[idx]?._count ?? 0}
-							optionId={data?.votes}
+							voteCount={voteCount?.[idx]}
 						/>
 					);
 				}
