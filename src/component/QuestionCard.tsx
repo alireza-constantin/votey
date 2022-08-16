@@ -3,12 +3,14 @@ import Link from 'next/link';
 import { Question } from '@prisma/client';
 import { motion } from 'framer-motion';
 import { formatDistance } from 'date-fns';
-import { clockIcon, shareIcon } from '@/assests/icons';
+import { clockIcon, endTimeIcon, shareIcon } from '@/assests/icons';
 
 const QuestionCard: React.FC<{
 	question: Question;
 	copyToClipboard: (question: Question) => void;
 }> = ({ question, copyToClipboard }) => {
+	const isEnded = new Date() > question?.endsAt;
+
 	return (
 		<motion.div
 			initial={{ opacity: 0, scale: 0.7 }}
@@ -26,14 +28,14 @@ const QuestionCard: React.FC<{
 							{question.question}
 						</h1>
 
-						<p className="text-xs flex gap-1 items-center mt-4 text-white/30">
+						<p className="text-xs flex gap-1.5 items-center mt-4 text-white/30">
 							<span>{clockIcon}</span>
 							Created on {question.createdAt.toDateString()}
 						</p>
 
-						<p className="text-xs flex gap-1 items-center mt-4 text-white/30">
-							<span>{clockIcon}</span>
-							End: {formatDistance(question.endsAt, new Date(), { addSuffix: true })}
+						<p className="text-xs flex gap-1.5 items-center mt-4 text-white/30">
+							<span>{isEnded ? endTimeIcon : clockIcon}</span>
+							{isEnded ? 'Ended' : 'End'} {formatDistance(question.endsAt, new Date(), { addSuffix: true })}
 						</p>
 					</div>
 					<div

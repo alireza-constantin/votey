@@ -97,29 +97,12 @@ const QuestionContent: React.FC<{ id: string }> = ({ id }) => {
 };
 
 const CardHeader = ({ question, text, date }: { question: string; text: string; date: string }) => {
-	const finishedIcon = (
-		<svg
-			xmlns="http://www.w3.org/2000/svg"
-			className="h-6 w-6"
-			fill="none"
-			viewBox="0 0 24 24"
-			stroke="currentColor"
-			strokeWidth={2}
-		>
-			<path
-				strokeLinecap="round"
-				strokeLinejoin="round"
-				d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"
-			/>
-		</svg>
-	);
-
 	return (
 		<div className="flex flex-col items-center justify-between gap-6 md:w-2/3 mx-auto mb-8">
 			<h2 className="text-center break-words font-semibold text-[1.40rem] md:text-2xl capitalize text-gray-300">
 				{question}
 			</h2>
-			<div className="text-xs font-bold text-gray-200 bg-slate-50/10 p-3">
+			<div className="text-xs font-semibold text-gray-200 bg-slate-50/10 p-3">
 				<span>{text}</span>
 				<span>{date}</span>
 			</div>
