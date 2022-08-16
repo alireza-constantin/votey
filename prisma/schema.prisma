@@ -16,7 +16,7 @@ model Question {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
 
-  endsAt DateTime?
+  endsAt DateTime
 
   question   String @db.VarChar(5000)
   ownerToken String @db.VarChar(255)

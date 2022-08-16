@@ -1,16 +1,18 @@
 import type { FC } from 'react';
-import { useState, useEffect } from 'react';
 
 import { motion } from 'framer-motion';
 
-const VotePercent: FC<{
+interface VotePercent {
 	choice: number | undefined;
 	text: string;
 	index: number;
 	totalVotes: number;
-	voteCount: any;
-}> = ({ choice, text, index, totalVotes, voteCount }) => {
-	function calcPercent(totalVotes: number, count: number): number {
+	voteCount: number | undefined;
+}
+
+const VotePercent: FC<VotePercent> = ({ choice, text, index, totalVotes, voteCount }) => {
+	// calculatin the percentage of each option
+	function calcPercent(totalVotes: number, count: number | undefined): number {
 		if (totalVotes === 0 || count === 0 || !count) return 0;
 		return (count / totalVotes) * 100;
 	}
@@ -43,7 +45,6 @@ const VotePercent: FC<{
 					initial={{ width: 0 }}
 					animate={{ width: `${calcPercent(totalVotes, voteCount)}%` }}
 					className="bg-fuchsia-500/70 h-5 rounded-lg"
-					// style={{ width: `${calcPercent(totalVotes, count)}%` }}
 				></motion.div>
 			</div>
 		</div>
