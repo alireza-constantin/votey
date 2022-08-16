@@ -44,3 +44,27 @@ export const shareIcon = (
 		/>
 	</svg>
 );
+
+export const fireIcon = (
+	<svg
+		xmlns="http://www.w3.org/2000/svg"
+		width="22"
+		height="22"
+		className="fill-current text-yellow-500 ml-1 animate-tilt"
+	>
+		<path d="M21 4h-3V3a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1v1H3a1 1 0 0 0-1 1v3c0 4.31 1.8 6.91 4.82 7A6 6 0 0 0 11 17.91V20H9v2h6v-2h-2v-2.09A6 6 0 0 0 17.18 15c3-.1 4.82-2.7 4.82-7V5a1 1 0 0 0-1-1zM4 8V6h2v6.83C4.22 12.08 4 9.3 4 8zm14 4.83V6h2v2c0 1.3-.22 4.08-2 4.83z"></path>
+	</svg>
+);
+
+export const tick = (
+	<svg
+		xmlns="http://www.w3.org/2000/svg"
+		className="h-6 w-6"
+		fill="none"
+		viewBox="0 0 24 24"
+		stroke="currentColor"
+		strokeWidth={2}
+	>
+		<path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+	</svg>
+);

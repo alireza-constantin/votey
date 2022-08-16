@@ -40,19 +40,36 @@ const QuestionContent: React.FC<{ id: string }> = ({ id }) => {
 		return <div>Question Not Found</div>;
 	}
 
+	// utils function to get the all votes
 	const getTotalVotes = (votes: any) => {
 		votes?.map((choice: { _count: number }) => {
 			totalVotes += choice._count;
 		});
 	};
 
+	// handler for submiting the vote
 	const voteHandler = (questionId: string, idx: number) => {
 		mutate({ questionId, option: idx });
 	};
 
 	if (data && data != undefined) getTotalVotes(data.votes);
 
-	// console.log(data);
+	const determineWinner = (arr: any): number => {
+		let winner;
+
+		for (let i = 0; i < arr.length; i++) {
+			if (arr[i + 1]) {
+				if (arr[i]._count < arr[i + 1]._count) {
+					winner = arr[i + 1].choice;
+				} else {
+					winner = arr[i].choice;
+				}
+			}
+		}
+		return winner;
+	};
+
+	console.log(data);
 
 	return (
 		<div className="mt-16">
@@ -69,9 +86,11 @@ const QuestionContent: React.FC<{ id: string }> = ({ id }) => {
 				if (data?.isOwner || data?.vote || data?.isEnded) {
 					return (
 						<VotePercent
+							isEnded={data?.isEnded}
 							totalVotes={totalVotes}
 							key={idx}
 							index={idx}
+							isWinner={idx === determineWinner(data?.votes) ? true : false}
 							choice={data.vote?.choice}
 							text={(option as any).text}
 							voteCount={voteCount?.[idx]}
