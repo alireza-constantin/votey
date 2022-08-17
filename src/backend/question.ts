@@ -77,6 +77,19 @@ export const questionRouter = createRouter()
             })
         }
     })
+    .mutation('delete', {
+        input: z.object({
+            id: z.string()
+        }),
+        async resolve({ input, ctx }) {
+            if (!ctx.token) throw new Error('unauthorized')
+            return await prisma.question.delete({
+                where: {
+                    id: input.id
+                }
+            })
+        }
+    })
     .mutation('vote', {
         input: z.object({
             questionId: z.string(),

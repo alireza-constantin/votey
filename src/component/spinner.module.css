@@ -1,8 +1,6 @@
 .spinner {
     animation: rotate 2s linear infinite;
     z-index: 10;
-    width: 24px;
-    height: 24px;
 
 }
 

@@ -1,9 +1,10 @@
 import React, { FC, useState } from 'react';
 import Link from 'next/link';
 import { Question } from '@prisma/client';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { formatDistance } from 'date-fns';
 import { clockIcon, endTimeIcon, shareIcon, trashIcon } from '@/assests/icons';
+import { trpc } from '@/utils/trpc';
 
 const QuestionCard: React.FC<{
 	question: Question;
@@ -13,66 +14,98 @@ const QuestionCard: React.FC<{
 
 	const isEnded = new Date() > question?.endsAt;
 
+	const utils = trpc.useContext();
+	const { mutate, isLoading } = trpc.useMutation(['questions.delete'], {
+		onSuccess: () => {
+			utils.invalidateQueries(['questions.getAllMyQuestions']);
+			closeModal();
+		},
+	});
+
 	function closeModal() {
 		setShowModal(false);
 	}
 
+	function deletePoll() {
+		mutate({ id: question.id });
+	}
+
+	const container = {
+		hidden: { opacity: 0, scale: 0.8 },
+		show: {
+			opacity: 1,
+			scale: 1,
+			transition: {
+				staggerChildren: 0.8,
+			},
+		},
+	};
+
+	const item = {
+		hidden: { opacity: 0, scale: 0.8 },
+		show: { opacity: 1, scale: 1 },
+	};
+
 	return (
 		<>
-			<motion.div
-				initial={{ opacity: 0, scale: 0.7 }}
-				animate={{ opacity: 1, scale: 1 }}
-				transition={{ duration: 0.4, ease: [0.77, 0.67, 0.43, 0.37] }}
-				className="h-full"
-			>
-				<Link href={`/question/${question.id}`}>
-					<div
-						key={question.id}
-						className="flex flex-col justify-between cursor-pointer rounded-md px-4 pb-2 pt-4 bg-indigo-900/20 shadow-xl hover:shadow-2xl  shadow-black/50 h-full"
-					>
-						<div>
-							<div className="flex items-center justify-between">
-								<h1 className="text-lg break-words font-bold capitalize">{question.question}</h1>
-								<div
-									className="hover:opacity-60 p-2"
-									onClick={(e) => {
-										e.stopPropagation();
-										setShowModal(true);
-									}}
-								>
-									{trashIcon}
+			<motion.ol key={question.id} variants={container} initial="hidden" animate="show">
+				<motion.li variants={item} className="h-full">
+					<Link href={`/question/${question.id}`}>
+						<div className="flex flex-col justify-between cursor-pointer rounded-md px-4 pb-2 pt-4 bg-indigo-900/20 shadow-xl hover:shadow-2xl  shadow-black/50 h-full">
+							<div>
+								<div className="flex items-center justify-between">
+									<h1 className="text-lg break-words font-bold capitalize">{question.question}</h1>
+									<div
+										className="hover:opacity-60 p-2"
+										onClick={(e) => {
+											e.stopPropagation();
+											setShowModal(true);
+										}}
+									>
+										{trashIcon}
+									</div>
 								</div>
-							</div>
-							<p className="text-xs flex gap-1.5 items-center mt-4 text-white/30">
-								<span>{clockIcon}</span>
-								Created on {question.createdAt.toDateString()}
-							</p>
+								<p className="text-xs flex gap-1.5 items-center mt-4 text-white/30">
+									<span>{clockIcon}</span>
+									Created on {question.createdAt.toDateString()}
+								</p>
 
-							<p className="text-xs flex gap-1.5 items-center mt-4 text-white/30">
-								<span>{isEnded ? endTimeIcon : clockIcon}</span>
-								{isEnded ? 'Ended' : 'End'} {formatDistance(question.endsAt, new Date(), { addSuffix: true })}
-							</p>
+								<p className="text-xs flex gap-1.5 items-center mt-4 text-white/30">
+									<span>{isEnded ? endTimeIcon : clockIcon}</span>
+									{isEnded ? 'Ended' : 'End'} {formatDistance(question.endsAt, new Date(), { addSuffix: true })}
+								</p>
+							</div>
+							<div
+								className="cursor-pointer self-end mt-6  p-2 hover:opacity-60"
+								onClick={(e) => {
+									e.stopPropagation();
+									copyToClipboard(question);
+								}}
+							>
+								{shareIcon}
+							</div>
 						</div>
-						<div
-							className="cursor-pointer self-end mt-6  p-2 hover:opacity-60"
-							onClick={(e) => {
-								e.stopPropagation();
-								copyToClipboard(question);
-							}}
-						>
-							{shareIcon}
-						</div>
-					</div>
-				</Link>
-			</motion.div>
-			{showModal && <Modal closeModal={closeModal} />}
+					</Link>
+				</motion.li>
+			</motion.ol>
+			<AnimatePresence>
+				{showModal && <Modal isLoading={isLoading} deletePoll={deletePoll} closeModal={closeModal} />}
+			</AnimatePresence>
 		</>
 	);
 };
 
-const Modal: FC<{ closeModal: () => void }> = ({ closeModal }) => {
+const Modal: FC<{ closeModal: () => void; deletePoll: () => void; isLoading: boolean }> = ({
+	closeModal,
+	deletePoll,
+	isLoading,
+}) => {
 	return (
-		<div
+		<motion.div
+			initial={{ opacity: 0 }}
+			animate={{ opacity: 1 }}
+			exit={{ opacity: 0 }}
+			transition={{ duration: 0.5 }}
 			onClick={(e) => {
 				const target = e.target as Element;
 				if (target.id === 'overlay') closeModal();
@@ -80,8 +113,13 @@ const Modal: FC<{ closeModal: () => void }> = ({ closeModal }) => {
 			id="overlay"
 			className="overflow-y-hidden overflow-x-hidden fixed inset-0 z-50 md:inset-0 p-4 md:h-full bg-slate-600/60 flex justify-center items-center"
 		>
-			{/* <div className="relative p-4 flex  w-full max-w-md h-full md:h-auto"> */}
-			<div className="relative md:w-1/2 lg:w-1/3 rounded-lg shadow bg-gray-800">
+			<motion.div
+				initial={{ opacity: 0, translateY: -100 }}
+				exit={{ opacity: 0, translateY: -100 }}
+				animate={{ opacity: 1, translateY: 0 }}
+				transition={{ duration: 0.7 }}
+				className="relative md:w-1/2 lg:w-1/3 rounded-lg shadow bg-gray-800"
+			>
 				<button
 					type="button"
 					onClick={closeModal}
@@ -119,11 +157,12 @@ const Modal: FC<{ closeModal: () => void }> = ({ closeModal }) => {
 					</svg>
 					<h3 className="mb-5 text-lg font-normal text-gray-400">Are you sure you want to delete this Poll?</h3>
 					<button
-						data-modal-toggle="popup-modal"
+						onClick={deletePoll}
+						disabled={isLoading}
 						type="button"
-						className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"
+						className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2 w-fit"
 					>
-						Yes, I am sure
+						Yes i`m sure
 					</button>
 					<button
 						onClick={closeModal}
@@ -133,9 +172,8 @@ const Modal: FC<{ closeModal: () => void }> = ({ closeModal }) => {
 						No, cancel
 					</button>
 				</div>
-			</div>
-		</div>
-		// </div>
+			</motion.div>
+		</motion.div>
 	);
 };
 

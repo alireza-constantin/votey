@@ -14,11 +14,7 @@ const QuestionContent: React.FC<{ id: string }> = ({ id }) => {
 
 	let totalVotes = 0;
 	// voting mutation
-	const {
-		mutate,
-		data: voteResponse,
-		isLoading: mutateLoading,
-	} = trpc.useMutation(['questions.vote'], {
+	const { mutate, isLoading: mutateLoading } = trpc.useMutation(['questions.vote'], {
 		onSuccess: () => {
 			window.location.reload();
 		},
@@ -73,8 +69,6 @@ const QuestionContent: React.FC<{ id: string }> = ({ id }) => {
 		return undefined;
 	};
 
-	console.log(data);
-
 	return (
 		<div className="mt-16">
 			<CardHeader
@@ -87,7 +81,6 @@ const QuestionContent: React.FC<{ id: string }> = ({ id }) => {
 				}
 			/>
 			{(data?.question?.options as string[])?.map((option, idx) => {
-				console.log(idx, option);
 				if (data?.isOwner || data?.vote || data?.isEnded) {
 					return (
 						<VotePercent

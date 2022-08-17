@@ -40,7 +40,7 @@ const CreateVote: React.FC = () => {
 	});
 
 	const onCreateVote = (data: createQuestionType) => {
-		mutate({ question: data.question, options: data.options, endsAt: data.endsAt ? new Date(data.endsAt) : null });
+		mutate({ question: data.question, options: data.options, endsAt: new Date(data.endsAt) });
 	};
 
 	return (
@@ -65,13 +65,13 @@ const CreateVote: React.FC = () => {
 					<label>Options</label>
 					<div className="grid grid-cols-1 w-full gap-x-5 gap-y-3 md:grid-cols-2">
 						{/* field array */}
-						<AnimatePresence>
+						<AnimatePresence initial={false}>
 							{fields.map((field, index) => {
 								return (
 									<motion.div
-										initial={index > 1 ? { opacity: 0, scale: 0.7 } : undefined}
+										initial={{ opacity: 0, scale: 0.7 }}
 										animate={{ opacity: 1, scale: 1 }}
-										exit={index > 1 ? { opacity: 0, scale: 0.7 } : undefined}
+										exit={{ opacity: 0, scale: 0.7 }}
 										transition={{ duration: 0.4, ease: [0.77, 0.67, 0.43, 0.37] }}
 										key={field.id}
 										className="w-full flex gap-3"
@@ -81,7 +81,6 @@ const CreateVote: React.FC = () => {
 											{...register(`options.${index}.text` as const, {
 												required: true,
 											})}
-											// className={errors?.options?.[index]?.text ? 'error' : ''}
 											className="outline-none focus:ring-4 ring-slate-600/40 bg-slate-800/60 text-sm  font-normal rounded-md text-slate-300 placeholder:text-gray-400  p-3 flex-1 "
 										/>
 										<button className="hover:text-gray-500" type="button" onClick={() => remove(index)}>
