@@ -35,10 +35,15 @@ const VotePercent: FC<VotePercent> = ({ choice, text, index, totalVotes, voteCou
 					animate={{ width: `${calcPercent(totalVotes, voteCount)}%` }}
 					className={clsx(
 						'h-8 rounded-xl flex items-center',
-						isEnded && isWinner ? 'bg-green-300' : 'bg-fuchsia-500/70'
+						isEnded && isWinner ? 'bg-green-300/60' : 'bg-fuchsia-500/70'
 					)}
 				>
-					{isEnded && isWinner && fireIcon}
+					{isEnded && isWinner && (
+						<>
+							<span>{fireIcon}</span>
+							<span className="ml-2 text-slate-700 font-semibold">Winner</span>
+						</>
+					)}
 				</motion.div>
 			</div>
 		</div>
