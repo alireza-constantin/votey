@@ -45,16 +45,22 @@ export const questionRouter = createRouter()
                 const votes = await prisma.vote.groupBy({
                     where: { questionsId: input.id },
                     by: ['choice'],
-                    _count: true
+                    _count: true,
+                    orderBy: {
+                        choice: 'asc'
+                    }
+
                 })
+
 
                 return {
                     ...rest,
-                    votes
+                    votes,
+
                 }
             }
 
-            return { ...rest, votes: undefined }
+            return { ...rest, votes: undefined, }
         }
     })
     .mutation('create', {

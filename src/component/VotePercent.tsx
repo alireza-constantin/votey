@@ -1,6 +1,7 @@
 import type { FC } from 'react';
 import { fireIcon, tick } from '@/assests/icons';
 import { motion } from 'framer-motion';
+import { clsx } from 'clsx';
 
 interface VotePercent {
 	choice: number | undefined;
@@ -27,12 +28,15 @@ const VotePercent: FC<VotePercent> = ({ choice, text, index, totalVotes, voteCou
 				</span>
 				<span className="text-sm font-medium text-gray-400">{calcPercent(totalVotes, voteCount).toFixed(2)}%</span>
 			</div>
-			<div className="w-full bg-slate-700 rounded-lg h-8">
+			<div className="w-full bg-slate-700 rounded-xl h-8">
 				<motion.div
 					transition={{ duration: '1' }}
 					initial={{ width: 0 }}
 					animate={{ width: `${calcPercent(totalVotes, voteCount)}%` }}
-					className="bg-fuchsia-500/70 h-8 rounded-lg flex items-center"
+					className={clsx(
+						'h-8 rounded-xl flex items-center',
+						isEnded && isWinner ? 'bg-green-300' : 'bg-fuchsia-500/70'
+					)}
 				>
 					{isEnded && isWinner && fireIcon}
 				</motion.div>

@@ -25,7 +25,6 @@ const QuestionContent: React.FC<{ id: string }> = ({ id }) => {
 	});
 
 	useMemo(() => {
-		console.log('use memo called');
 		const voteCount = data?.votes?.reduce<{ [choice: number]: number }>((prev, next) => {
 			prev[next.choice] = next._count;
 			return prev;
@@ -54,19 +53,24 @@ const QuestionContent: React.FC<{ id: string }> = ({ id }) => {
 
 	if (data && data != undefined) getTotalVotes(data.votes);
 
-	const determineWinner = (arr: any): number => {
-		let winner;
+	const determineWinner = (): number | undefined => {
+		// check to see if there is vote
+		if (!data?.votes) return undefined;
+		if (!voteCount) return undefined;
 
-		for (let i = 0; i < arr.length; i++) {
-			if (arr[i + 1]) {
-				if (arr[i]._count < arr[i + 1]._count) {
-					winner = arr[i + 1].choice;
-				} else {
-					winner = arr[i].choice;
-				}
+		const counts = Object.values(voteCount);
+		const highestVote = counts.filter((c) => c === Math.max(...counts));
+
+		// check to see if there are two choice with same vote count and return unefined
+		if (highestVote.length > 1) return undefined;
+
+		for (let vote of data?.votes) {
+			if (vote._count === highestVote[0]) {
+				return vote.choice;
 			}
 		}
-		return winner;
+
+		return undefined;
 	};
 
 	console.log(data);
@@ -83,6 +87,7 @@ const QuestionContent: React.FC<{ id: string }> = ({ id }) => {
 				}
 			/>
 			{(data?.question?.options as string[])?.map((option, idx) => {
+				console.log(idx, option);
 				if (data?.isOwner || data?.vote || data?.isEnded) {
 					return (
 						<VotePercent
@@ -90,7 +95,7 @@ const QuestionContent: React.FC<{ id: string }> = ({ id }) => {
 							totalVotes={totalVotes}
 							key={idx}
 							index={idx}
-							isWinner={idx === determineWinner(data?.votes) ? true : false}
+							isWinner={idx === determineWinner() ? true : false}
 							choice={data.vote?.choice}
 							text={(option as any).text}
 							voteCount={voteCount?.[idx]}
